@@ -1,3 +1,6 @@
+#ifndef LLVMJS_H
+#define LLVMJS_H
+
 #include <llvm-c/Analysis.h>
 #include <llvm-c/BitReader.h>
 #include <llvm-c/BitWriter.h>
@@ -35,3 +38,5 @@
 #include <emscripten.h>
 
 #define LLVM_API EMSCRIPTEN_KEEPALIVE
+
+#endif

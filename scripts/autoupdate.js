@@ -46,7 +46,7 @@ headers.forEach(file => {
 
   // Functions
   {
-    const funcRe = /^(\w+ [\*]*)(LLVM\w+)\(([^)]*)\)/mg; // char *LLVMPrintValueToString(LLVMValueRef Val)
+    const funcRe = /^((?:\w+[\* ])+\** ?)(LLVM\w+)\(([^)]*)\)/mg; // char *LLVMPrintValueToString(LLVMValueRef Val)
     do {
       let funcMatch = funcRe.exec(source);
       if (!funcMatch) break;

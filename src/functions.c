@@ -210,6 +210,16 @@ LLVM_API LLVMAttributeRef CreateStringAttribute(
   unsigned VLength
 ) { return LLVMCreateStringAttribute(C, K, KLength, V, VLength); }
 
+LLVM_API const char *GetStringAttributeKind(
+  LLVMAttributeRef A,
+  unsigned *Length
+) { return LLVMGetStringAttributeKind(A, Length); }
+
+LLVM_API const char *GetStringAttributeValue(
+  LLVMAttributeRef A,
+  unsigned *Length
+) { return LLVMGetStringAttributeValue(A, Length); }
+
 LLVM_API LLVMBool IsEnumAttribute(
   LLVMAttributeRef A
 ) { return LLVMIsEnumAttribute(A); }
@@ -235,11 +245,21 @@ LLVM_API void DisposeModule(
   LLVMModuleRef M
 ) { return LLVMDisposeModule(M); }
 
+LLVM_API const char *GetModuleIdentifier(
+  LLVMModuleRef M,
+  size_t *Len
+) { return LLVMGetModuleIdentifier(M, Len); }
+
 LLVM_API void SetModuleIdentifier(
   LLVMModuleRef M,
   const char *Ident,
   size_t Len
 ) { return LLVMSetModuleIdentifier(M, Ident, Len); }
+
+LLVM_API const char *GetSourceFileName(
+  LLVMModuleRef M,
+  size_t *Len
+) { return LLVMGetSourceFileName(M, Len); }
 
 LLVM_API void SetSourceFileName(
   LLVMModuleRef M,
@@ -247,10 +267,22 @@ LLVM_API void SetSourceFileName(
   size_t Len
 ) { return LLVMSetSourceFileName(M, Name, Len); }
 
+LLVM_API const char *GetDataLayoutStr(
+  LLVMModuleRef M
+) { return LLVMGetDataLayoutStr(M); }
+
+LLVM_API const char *GetDataLayout(
+  LLVMModuleRef M
+) { return LLVMGetDataLayout(M); }
+
 LLVM_API void SetDataLayout(
   LLVMModuleRef M,
   const char *DataLayoutStr
 ) { return LLVMSetDataLayout(M, DataLayoutStr); }
+
+LLVM_API const char *GetTarget(
+  LLVMModuleRef M
+) { return LLVMGetTarget(M); }
 
 LLVM_API void SetTarget(
   LLVMModuleRef M,
@@ -265,6 +297,12 @@ LLVM_API LLVMModuleFlagEntry *CopyModuleFlagsMetadata(
 LLVM_API void DisposeModuleFlagsMetadata(
   LLVMModuleFlagEntry *Entries
 ) { return LLVMDisposeModuleFlagsMetadata(Entries); }
+
+LLVM_API const char *ModuleFlagEntriesGetKey(
+  LLVMModuleFlagEntry *Entries,
+  unsigned Index,
+  size_t *Len
+) { return LLVMModuleFlagEntriesGetKey(Entries, Index, Len); }
 
 LLVM_API LLVMMetadataRef ModuleFlagEntriesGetMetadata(
   LLVMModuleFlagEntry *Entries,
@@ -298,6 +336,11 @@ LLVM_API LLVMBool PrintModuleToFile(
 LLVM_API char *PrintModuleToString(
   LLVMModuleRef M
 ) { return LLVMPrintModuleToString(M); }
+
+LLVM_API const char *GetModuleInlineAsm(
+  LLVMModuleRef M,
+  size_t *Len
+) { return LLVMGetModuleInlineAsm(M, Len); }
 
 LLVM_API void SetModuleInlineAsm2(
   LLVMModuleRef M,
@@ -359,6 +402,11 @@ LLVM_API LLVMNamedMDNodeRef GetOrInsertNamedMetadata(
   size_t NameLen
 ) { return LLVMGetOrInsertNamedMetadata(M, Name, NameLen); }
 
+LLVM_API const char *GetNamedMetadataName(
+  LLVMNamedMDNodeRef NamedMD,
+  size_t *NameLen
+) { return LLVMGetNamedMetadataName(NamedMD, NameLen); }
+
 LLVM_API unsigned GetNamedMetadataNumOperands(
   LLVMModuleRef M,
   const char *Name
@@ -375,6 +423,16 @@ LLVM_API void AddNamedMetadataOperand(
   const char *Name,
   LLVMValueRef Val
 ) { return LLVMAddNamedMetadataOperand(M, Name, Val); }
+
+LLVM_API const char *GetDebugLocDirectory(
+  LLVMValueRef Val,
+  unsigned *Length
+) { return LLVMGetDebugLocDirectory(Val, Length); }
+
+LLVM_API const char *GetDebugLocFilename(
+  LLVMValueRef Val,
+  unsigned *Length
+) { return LLVMGetDebugLocFilename(Val, Length); }
 
 LLVM_API unsigned GetDebugLocLine(
   LLVMValueRef Val
@@ -563,6 +621,10 @@ LLVM_API LLVMTypeRef StructCreateNamed(
   const char *Name
 ) { return LLVMStructCreateNamed(C, Name); }
 
+LLVM_API const char *GetStructName(
+  LLVMTypeRef Ty
+) { return LLVMGetStructName(Ty); }
+
 LLVM_API void StructSetBody(
   LLVMTypeRef StructTy,
   LLVMTypeRef *ElementTypes,
@@ -670,6 +732,11 @@ LLVM_API LLVMValueKind GetValueKind(
   LLVMValueRef Val
 ) { return LLVMGetValueKind(Val); }
 
+LLVM_API const char *GetValueName2(
+  LLVMValueRef Val,
+  size_t *Length
+) { return LLVMGetValueName2(Val, Length); }
+
 LLVM_API void SetValueName2(
   LLVMValueRef Val,
   const char *Name,
@@ -704,6 +771,10 @@ LLVM_API LLVMValueRef IsAMDNode(
 LLVM_API LLVMValueRef IsAMDString(
   LLVMValueRef Val
 ) { return LLVMIsAMDString(Val); }
+
+LLVM_API const char *GetValueName(
+  LLVMValueRef Val
+) { return LLVMGetValueName(Val); }
 
 LLVM_API void SetValueName(
   LLVMValueRef Val,
@@ -807,6 +878,14 @@ LLVM_API LLVMValueRef ConstRealOfStringAndSize(
   unsigned SLen
 ) { return LLVMConstRealOfStringAndSize(RealTy, Text, SLen); }
 
+LLVM_API unsigned long long ConstIntGetZExtValue(
+  LLVMValueRef ConstantVal
+) { return LLVMConstIntGetZExtValue(ConstantVal); }
+
+LLVM_API long long ConstIntGetSExtValue(
+  LLVMValueRef ConstantVal
+) { return LLVMConstIntGetSExtValue(ConstantVal); }
+
 LLVM_API double ConstRealGetDouble(
   LLVMValueRef ConstantVal,
   LLVMBool *losesInfo
@@ -828,6 +907,11 @@ LLVM_API LLVMValueRef ConstString(
 LLVM_API LLVMBool IsConstantString(
   LLVMValueRef c
 ) { return LLVMIsConstantString(c); }
+
+LLVM_API const char *GetAsString(
+  LLVMValueRef c,
+  size_t *Length
+) { return LLVMGetAsString(c, Length); }
 
 LLVM_API LLVMValueRef ConstStructInContext(
   LLVMContextRef C,
@@ -1226,6 +1310,10 @@ LLVM_API void SetLinkage(
   LLVMLinkage Linkage
 ) { return LLVMSetLinkage(Global, Linkage); }
 
+LLVM_API const char *GetSection(
+  LLVMValueRef Global
+) { return LLVMGetSection(Global); }
+
 LLVM_API void SetSection(
   LLVMValueRef Global,
   const char *Section
@@ -1470,6 +1558,18 @@ LLVM_API LLVMTypeRef IntrinsicGetType(
   size_t ParamCount
 ) { return LLVMIntrinsicGetType(Ctx, ID, ParamTypes, ParamCount); }
 
+LLVM_API const char *IntrinsicGetName(
+  unsigned ID,
+  size_t *NameLength
+) { return LLVMIntrinsicGetName(ID, NameLength); }
+
+LLVM_API const char *IntrinsicCopyOverloadedName(
+  unsigned ID,
+  LLVMTypeRef *ParamTypes,
+  size_t ParamCount,
+  size_t *NameLength
+) { return LLVMIntrinsicCopyOverloadedName(ID, ParamTypes, ParamCount, NameLength); }
+
 LLVM_API LLVMBool IntrinsicIsOverloaded(
   unsigned ID
 ) { return LLVMIntrinsicIsOverloaded(ID); }
@@ -1482,6 +1582,10 @@ LLVM_API void SetFunctionCallConv(
   LLVMValueRef Fn,
   unsigned CC
 ) { return LLVMSetFunctionCallConv(Fn, CC); }
+
+LLVM_API const char *GetGC(
+  LLVMValueRef Fn
+) { return LLVMGetGC(Fn); }
 
 LLVM_API void SetGC(
   LLVMValueRef Fn,
@@ -1645,6 +1749,11 @@ LLVM_API LLVMMetadataRef ValueAsMetadata(
   LLVMValueRef Val
 ) { return LLVMValueAsMetadata(Val); }
 
+LLVM_API const char *GetMDString(
+  LLVMValueRef V,
+  unsigned *Length
+) { return LLVMGetMDString(V, Length); }
+
 LLVM_API unsigned GetMDNodeNumOperands(
   LLVMValueRef V
 ) { return LLVMGetMDNodeNumOperands(V); }
@@ -1687,6 +1796,10 @@ LLVM_API LLVMBool ValueIsBasicBlock(
 LLVM_API LLVMBasicBlockRef ValueAsBasicBlock(
   LLVMValueRef Val
 ) { return LLVMValueAsBasicBlock(Val); }
+
+LLVM_API const char *GetBasicBlockName(
+  LLVMBasicBlockRef BB
+) { return LLVMGetBasicBlockName(BB); }
 
 LLVM_API LLVMValueRef GetBasicBlockParent(
   LLVMBasicBlockRef BB
@@ -2009,6 +2122,10 @@ LLVM_API LLVMBasicBlockRef GetIncomingBlock(
 LLVM_API unsigned GetNumIndices(
   LLVMValueRef Inst
 ) { return LLVMGetNumIndices(Inst); }
+
+LLVM_API const unsigned *GetIndices(
+  LLVMValueRef Inst
+) { return LLVMGetIndices(Inst); }
 
 LLVM_API LLVMBuilderRef CreateBuilderInContext(
   LLVMContextRef C
@@ -3010,6 +3127,10 @@ LLVM_API LLVMMemoryBufferRef CreateMemoryBufferWithMemoryRangeCopy(
   const char *BufferName
 ) { return LLVMCreateMemoryBufferWithMemoryRangeCopy(InputData, InputDataLength, BufferName); }
 
+LLVM_API const char *GetBufferStart(
+  LLVMMemoryBufferRef MemBuf
+) { return LLVMGetBufferStart(MemBuf); }
+
 LLVM_API size_t GetBufferSize(
   LLVMMemoryBufferRef MemBuf
 ) { return LLVMGetBufferSize(MemBuf); }
@@ -3147,6 +3268,21 @@ LLVM_API LLVMMetadataRef DIScopeGetFile(
   LLVMMetadataRef Scope
 ) { return LLVMDIScopeGetFile(Scope); }
 
+LLVM_API const char *DIFileGetDirectory(
+  LLVMMetadataRef File,
+  unsigned *Len
+) { return LLVMDIFileGetDirectory(File, Len); }
+
+LLVM_API const char *DIFileGetFilename(
+  LLVMMetadataRef File,
+  unsigned *Len
+) { return LLVMDIFileGetFilename(File, Len); }
+
+LLVM_API const char *DIFileGetSource(
+  LLVMMetadataRef File,
+  unsigned *Len
+) { return LLVMDIFileGetSource(File, Len); }
+
 LLVM_API LLVMMetadataRef DIBuilderGetOrCreateTypeArray(
   LLVMDIBuilderRef Builder,
   LLVMMetadataRef *Data,
@@ -3280,6 +3416,11 @@ LLVM_API LLVMMetadataRef DIBuilderCreateClassType(
   const char *UniqueIdentifier,
   size_t UniqueIdentifierLen
 ) { return LLVMDIBuilderCreateClassType(Builder, Scope, Name, NameLen, File, LineNumber, SizeInBits, AlignInBits, OffsetInBits, Flags, DerivedFrom, Elements, NumElements, VTableHolder, TemplateParamsNode, UniqueIdentifier, UniqueIdentifierLen); }
+
+LLVM_API const char *DITypeGetName(
+  LLVMMetadataRef DType,
+  size_t *Length
+) { return LLVMDITypeGetName(DType, Length); }
 
 LLVM_API uint64_t DITypeGetSizeInBits(
   LLVMMetadataRef DType
@@ -3521,6 +3662,11 @@ LLVM_API LLVMGenericValueRef CreateGenericValueOfFloat(
 LLVM_API unsigned GenericValueIntWidth(
   LLVMGenericValueRef GenValRef
 ) { return LLVMGenericValueIntWidth(GenValRef); }
+
+LLVM_API unsigned long long GenericValueToInt(
+  LLVMGenericValueRef GenVal,
+  LLVMBool IsSigned
+) { return LLVMGenericValueToInt(GenVal, IsSigned); }
 
 LLVM_API void *GenericValueToPointer(
   LLVMGenericValueRef GenVal
@@ -3791,9 +3937,17 @@ LLVM_API void MoveToNextSymbol(
   LLVMSymbolIteratorRef SI
 ) { return LLVMMoveToNextSymbol(SI); }
 
+LLVM_API const char *GetSectionName(
+  LLVMSectionIteratorRef SI
+) { return LLVMGetSectionName(SI); }
+
 LLVM_API uint64_t GetSectionSize(
   LLVMSectionIteratorRef SI
 ) { return LLVMGetSectionSize(SI); }
+
+LLVM_API const char *GetSectionContents(
+  LLVMSectionIteratorRef SI
+) { return LLVMGetSectionContents(SI); }
 
 LLVM_API uint64_t GetSectionAddress(
   LLVMSectionIteratorRef SI
@@ -3821,6 +3975,10 @@ LLVM_API void MoveToNextRelocation(
   LLVMRelocationIteratorRef RI
 ) { return LLVMMoveToNextRelocation(RI); }
 
+LLVM_API const char *GetSymbolName(
+  LLVMSymbolIteratorRef SI
+) { return LLVMGetSymbolName(SI); }
+
 LLVM_API uint64_t GetSymbolAddress(
   LLVMSymbolIteratorRef SI
 ) { return LLVMGetSymbolAddress(SI); }
@@ -3840,6 +3998,14 @@ LLVM_API LLVMSymbolIteratorRef GetRelocationSymbol(
 LLVM_API uint64_t GetRelocationType(
   LLVMRelocationIteratorRef RI
 ) { return LLVMGetRelocationType(RI); }
+
+LLVM_API const char *GetRelocationTypeName(
+  LLVMRelocationIteratorRef RI
+) { return LLVMGetRelocationTypeName(RI); }
+
+LLVM_API const char *GetRelocationValueString(
+  LLVMRelocationIteratorRef RI
+) { return LLVMGetRelocationValueString(RI); }
 
 LLVM_API LLVMObjectFileRef CreateObjectFile(
   LLVMMemoryBufferRef MemBuf
@@ -3867,6 +4033,87 @@ LLVM_API LLVMBool IsSymbolIteratorAtEnd(
   LLVMSymbolIteratorRef SI
 ) { return LLVMIsSymbolIteratorAtEnd(ObjectFile, SI); }
 
+LLVM_API extern const char *RemarkStringGetData(
+  LLVMRemarkStringRef String
+) { return LLVMRemarkStringGetData(String); }
+
+LLVM_API extern uint32_t RemarkStringGetLen(
+  LLVMRemarkStringRef String
+) { return LLVMRemarkStringGetLen(String); }
+
+LLVM_API extern uint32_t RemarkDebugLocGetSourceLine(
+  LLVMRemarkDebugLocRef DL
+) { return LLVMRemarkDebugLocGetSourceLine(DL); }
+
+LLVM_API extern uint32_t RemarkDebugLocGetSourceColumn(
+  LLVMRemarkDebugLocRef DL
+) { return LLVMRemarkDebugLocGetSourceColumn(DL); }
+
+LLVM_API extern LLVMRemarkStringRef RemarkArgGetKey(
+  LLVMRemarkArgRef Arg
+) { return LLVMRemarkArgGetKey(Arg); }
+
+LLVM_API extern LLVMRemarkStringRef RemarkArgGetValue(
+  LLVMRemarkArgRef Arg
+) { return LLVMRemarkArgGetValue(Arg); }
+
+LLVM_API extern LLVMRemarkDebugLocRef RemarkArgGetDebugLoc(
+  LLVMRemarkArgRef Arg
+) { return LLVMRemarkArgGetDebugLoc(Arg); }
+
+LLVM_API extern void RemarkEntryDispose(
+  LLVMRemarkEntryRef Remark
+) { return LLVMRemarkEntryDispose(Remark); }
+
+LLVM_API extern enum LLVMRemarkType RemarkEntryGetType(
+  LLVMRemarkEntryRef Remark
+) { return LLVMRemarkEntryGetType(Remark); }
+
+LLVM_API extern uint64_t RemarkEntryGetHotness(
+  LLVMRemarkEntryRef Remark
+) { return LLVMRemarkEntryGetHotness(Remark); }
+
+LLVM_API extern uint32_t RemarkEntryGetNumArgs(
+  LLVMRemarkEntryRef Remark
+) { return LLVMRemarkEntryGetNumArgs(Remark); }
+
+LLVM_API extern LLVMRemarkArgRef RemarkEntryGetFirstArg(
+  LLVMRemarkEntryRef Remark
+) { return LLVMRemarkEntryGetFirstArg(Remark); }
+
+LLVM_API extern LLVMRemarkArgRef RemarkEntryGetNextArg(
+  LLVMRemarkArgRef It,
+  LLVMRemarkEntryRef Remark
+) { return LLVMRemarkEntryGetNextArg(It, Remark); }
+
+LLVM_API extern LLVMRemarkParserRef RemarkParserCreateYAML(
+  const void *Buf,
+  uint64_t Size
+) { return LLVMRemarkParserCreateYAML(Buf, Size); }
+
+LLVM_API extern LLVMRemarkParserRef RemarkParserCreateBitstream(
+  const void *Buf,
+  uint64_t Size
+) { return LLVMRemarkParserCreateBitstream(Buf, Size); }
+
+LLVM_API extern LLVMRemarkEntryRef RemarkParserGetNext(
+  LLVMRemarkParserRef Parser
+) { return LLVMRemarkParserGetNext(Parser); }
+
+LLVM_API extern LLVMBool RemarkParserHasError(
+  LLVMRemarkParserRef Parser
+) { return LLVMRemarkParserHasError(Parser); }
+
+LLVM_API extern const char *RemarkParserGetErrorMessage(
+  LLVMRemarkParserRef Parser
+) { return LLVMRemarkParserGetErrorMessage(Parser); }
+
+LLVM_API extern void RemarkParserDispose(
+  LLVMRemarkParserRef Parser
+) { return LLVMRemarkParserDispose(Parser); }
+
+LLVM_API extern uint32_t RemarkVersion(void) { return LLVMRemarkVersion(); }
+
 LLVM_API LLVMBool LoadLibraryPermanently(
   const char* Filename
 ) { return LLVMLoadLibraryPermanently(Filename); }
@@ -3885,6 +4132,26 @@ LLVM_API void AddSymbol(
   const char *symbolName,
   void *symbolValue
 ) { return LLVMAddSymbol(symbolName, symbolValue); }
+
+LLVM_API static inline void InitializeAllTargetInfos(void) { return LLVMInitializeAllTargetInfos(); }
+
+LLVM_API static inline void InitializeAllTargets(void) { return LLVMInitializeAllTargets(); }
+
+LLVM_API static inline void InitializeAllTargetMCs(void) { return LLVMInitializeAllTargetMCs(); }
+
+LLVM_API static inline void InitializeAllAsmPrinters(void) { return LLVMInitializeAllAsmPrinters(); }
+
+LLVM_API static inline void InitializeAllAsmParsers(void) { return LLVMInitializeAllAsmParsers(); }
+
+LLVM_API static inline void InitializeAllDisassemblers(void) { return LLVMInitializeAllDisassemblers(); }
+
+LLVM_API static inline LLVMBool InitializeNativeTarget(void) { return LLVMInitializeNativeTarget(); }
+
+LLVM_API static inline LLVMBool InitializeNativeAsmParser(void) { return LLVMInitializeNativeAsmParser(); }
+
+LLVM_API static inline LLVMBool InitializeNativeAsmPrinter(void) { return LLVMInitializeNativeAsmPrinter(); }
+
+LLVM_API static inline LLVMBool InitializeNativeDisassembler(void) { return LLVMInitializeNativeDisassembler(); }
 
 LLVM_API LLVMTargetDataRef GetModuleDataLayout(
   LLVMModuleRef M
@@ -3911,6 +4178,10 @@ LLVM_API void AddTargetLibraryInfo(
 LLVM_API char *CopyStringRepOfTargetData(
   LLVMTargetDataRef TD
 ) { return LLVMCopyStringRepOfTargetData(TD); }
+
+LLVM_API enum LLVMByteOrdering ByteOrder(
+  LLVMTargetDataRef TD
+) { return LLVMByteOrder(TD); }
 
 LLVM_API unsigned PointerSize(
   LLVMTargetDataRef TD
@@ -3941,6 +4212,21 @@ LLVM_API LLVMTypeRef IntPtrTypeForASInContext(
   unsigned AS
 ) { return LLVMIntPtrTypeForASInContext(C, TD, AS); }
 
+LLVM_API unsigned long long SizeOfTypeInBits(
+  LLVMTargetDataRef TD,
+  LLVMTypeRef Ty
+) { return LLVMSizeOfTypeInBits(TD, Ty); }
+
+LLVM_API unsigned long long StoreSizeOfType(
+  LLVMTargetDataRef TD,
+  LLVMTypeRef Ty
+) { return LLVMStoreSizeOfType(TD, Ty); }
+
+LLVM_API unsigned long long ABISizeOfType(
+  LLVMTargetDataRef TD,
+  LLVMTypeRef Ty
+) { return LLVMABISizeOfType(TD, Ty); }
+
 LLVM_API unsigned ABIAlignmentOfType(
   LLVMTargetDataRef TD,
   LLVMTypeRef Ty
@@ -3967,6 +4253,12 @@ LLVM_API unsigned ElementAtOffset(
   unsigned long long Offset
 ) { return LLVMElementAtOffset(TD, StructTy, Offset); }
 
+LLVM_API unsigned long long OffsetOfElement(
+  LLVMTargetDataRef TD,
+  LLVMTypeRef StructTy,
+  unsigned Element
+) { return LLVMOffsetOfElement(TD, StructTy, Element); }
+
 LLVM_API LLVMTargetRef GetFirstTarget(void) { return LLVMGetFirstTarget(); }
 
 LLVM_API LLVMTargetRef GetNextTarget(
@@ -3982,6 +4274,14 @@ LLVM_API LLVMBool GetTargetFromTriple(
   LLVMTargetRef *T,
   char **ErrorMessage
 ) { return LLVMGetTargetFromTriple(Triple, T, ErrorMessage); }
+
+LLVM_API const char *GetTargetName(
+  LLVMTargetRef T
+) { return LLVMGetTargetName(T); }
+
+LLVM_API const char *GetTargetDescription(
+  LLVMTargetRef T
+) { return LLVMGetTargetDescription(T); }
 
 LLVM_API LLVMBool TargetHasJIT(
   LLVMTargetRef T
@@ -4049,6 +4349,16 @@ LLVM_API LLVMBool TargetMachineEmitToMemoryBuffer(
   char** ErrorMessage,
   LLVMMemoryBufferRef *OutMemBuf
 ) { return LLVMTargetMachineEmitToMemoryBuffer(T, M, codegen, ErrorMessage, OutMemBuf); }
+
+LLVM_API char* GetDefaultTargetTriple(void) { return LLVMGetDefaultTargetTriple(); }
+
+LLVM_API char* NormalizeTargetTriple(
+  const char* triple
+) { return LLVMNormalizeTargetTriple(triple); }
+
+LLVM_API char* GetHostCPUName(void) { return LLVMGetHostCPUName(); }
+
+LLVM_API char* GetHostCPUFeatures(void) { return LLVMGetHostCPUFeatures(); }
 
 LLVM_API void AddAnalysisPasses(
   LLVMTargetMachineRef T,
